@@ -49,6 +49,14 @@ public class TemplateSupportMsg {
         return this;
     }
 
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
+
     public TemplateSupportMsg addData(String key, Object value){
         data.addData(key, new Item(value, Constant.TEMPLATE_DEFAULT_COLOR));
         return this;
