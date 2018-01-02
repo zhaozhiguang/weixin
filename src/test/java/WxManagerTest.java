@@ -62,13 +62,13 @@ public class WxManagerTest {
     @Test
     public void json1Test(){
         TemplateSupportMsg templateSupportMsg = new TemplateSupportMsg();
-        templateSupportMsg.setTouser("ov-v2wFORZJbSo5Dk5tfhmWj0Lqs");
-        templateSupportMsg.setTemplate_id("yVLG1-OSvHkoGdbGpCmvE3p-lk1V7L5enjeELAgaz98");
-        templateSupportMsg.setUrl("http://www.baidu.com");
-        templateSupportMsg.addData("first","欢迎你的光临");
-        templateSupportMsg.addData("keyword2","你的名字");
-        templateSupportMsg.addData("keyword1","yyyy-MM-dd");
-        templateSupportMsg.addData("remark","再接再厉哦");
+        templateSupportMsg.setTouser("ov-v2wFORZJbSo5Dk5tfhmWj0Lqs")
+                .setTemplate_id("yVLG1-OSvHkoGdbGpCmvE3p-lk1V7L5enjeELAgaz98")
+                .setUrl("http://www.baidu.com")
+                .addData("first","欢迎你的光临")
+                .addData("keyword2","你的名字")
+                .addData("keyword1","yyyy-MM-dd")
+                .addData("remark","再接再厉哦");
         String result = JSON.toJSONString(templateSupportMsg);
         System.err.println(result);
         manager.SendTemplateMsg(templateSupportMsg);
