@@ -8,10 +8,10 @@ import com.zhaozhiguang.component.weixin.config.WxApiConfig;
 import com.zhaozhiguang.component.weixin.config.WxProperties;
 import com.zhaozhiguang.component.weixin.pojo.req.customer.CustomerSupportMsg;
 import com.zhaozhiguang.component.weixin.pojo.req.template.TemplateSupportMsg;
-import com.zhaozhiguang.component.weixin.pojo.res.AccessTokenRes;
-import com.zhaozhiguang.component.weixin.pojo.res.SupportRes;
-import com.zhaozhiguang.component.weixin.pojo.res.UserInfoRes;
+import com.zhaozhiguang.component.weixin.pojo.res.*;
+import com.zhaozhiguang.component.weixin.sign.JsApiSignUtil;
 import com.zhaozhiguang.component.weixin.sign.WxSignUtil;
+import com.zhaozhiguang.component.weixin.util.ArgsCheckUtils;
 import com.zhaozhiguang.component.weixin.util.HttpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +40,8 @@ public class WeiXinManager {
     }
 
     private static final String WX_ACCESS_TOKEN = "WX_ACCESS_TOKEN";
+
+    private static final String WX_JS_ACCESS_TOKEN = "WX_JS_ACCESS_TOKEN";
 
     /**
      * 微信验证接口
@@ -80,8 +82,9 @@ public class WeiXinManager {
                 }
             }
         } catch (IOException e) {
-            logger.error("获取accesstoken发生异常", e);
+            logger.error("获取accessToken发生异常", e);
         }
+        ArgsCheckUtils.notNull(value);
         return null;
     }
 
@@ -91,6 +94,7 @@ public class WeiXinManager {
      * @return
      */
     public String getOpenId(String code){
+        ArgsCheckUtils.notNull(code);
         String openId = null;
         try {
             String result = HttpUtils.get(config.getOpenIdUrl(properties.getAppId(), properties.getSecret(), code), null);
@@ -121,6 +125,7 @@ public class WeiXinManager {
      * @return
      */
     public UserInfoRes getUserInfoByOpenId(String openId){
+        ArgsCheckUtils.notNull(openId);
         String token = getAccessToken();
         try {
             String result = HttpUtils.get(config.getUserInfoUrl(token, openId), null);
@@ -140,6 +145,7 @@ public class WeiXinManager {
      * @return
      */
     public boolean SendTemplateMsg(TemplateSupportMsg template){
+        ArgsCheckUtils.notNull(template);
         String token = getAccessToken();
         try {
             String result = HttpUtils.postJson(config.getTemplateMsgUrl(token),null, JSON.toJSONString(template));
@@ -159,6 +165,7 @@ public class WeiXinManager {
      * @return
      */
     public boolean SendCustomerMsg(CustomerSupportMsg customerMsg){
+        ArgsCheckUtils.notNull(customerMsg);
         String token = getAccessToken();
         try {
             String result = HttpUtils.postJson(config.getCustomerMsgUrl(token),null, JSON.toJSONString(customerMsg));
@@ -170,6 +177,40 @@ public class WeiXinManager {
             logger.error("发送客服消息发生异常", e);
         }
         return false;
+    }
+
+    /**
+     * 获取jsApiTicket
+     * @return
+     */
+    public String getJsApiTicket(){
+        String value = wxCache.getValue(WX_JS_ACCESS_TOKEN);
+        if(value!=null) return value;
+        try {
+            String token = getAccessToken();
+             String result = HttpUtils.get(config.getJsApiTicketUrl(token),null);
+             if(result!=null){
+                 JsApiTicketRes res = JSON.parseObject(result, JsApiTicketRes.class);
+                 if(res!=null&&res.getErrcode()==0){
+                     wxCache.setValue(WX_JS_ACCESS_TOKEN, res.getTicket(), res.getExpires_in());
+                     return res.getTicket();
+                 }
+             }
+        } catch (IOException e) {
+            logger.error("获取JsApiTicket发生异常", e);
+        }
+        return null;
+    }
+
+    /**
+     * 获取微信js接口验证结果
+     * @param url
+     * @return
+     */
+    public JsSignResult getJsApiSignResult(String url){
+        ArgsCheckUtils.notNull(url);
+        String ticket = getJsApiTicket();
+        return JsApiSignUtil.sign(ticket, url);
     }
 
 

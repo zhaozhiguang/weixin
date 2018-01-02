@@ -85,5 +85,13 @@ public class WxApiConfig {
         return String.format("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=%s", accessToken);
     }
 
+    /**
+     * 获取jsapiTicket链接
+     * @param accessToken
+     * @return
+     */
+    public String getJsApiTicketUrl(String accessToken){
+        return String.format("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi", accessToken);
+    }
 
 }
