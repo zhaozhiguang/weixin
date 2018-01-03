@@ -1,8 +1,6 @@
 package com.zhaozhiguang.component.weixin.pojo.req.qrcode;
 
 
-import java.util.HashMap;
-
 /**
  * 微信二维码
  * 临时二维码需要设置expire_seconds

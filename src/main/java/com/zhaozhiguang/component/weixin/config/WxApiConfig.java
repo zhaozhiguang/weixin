@@ -103,4 +103,44 @@ public class WxApiConfig {
         return String.format("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi", accessToken);
     }
 
+
+
+    /****---------------------------新版客服系统--------------------------------****/
+
+    /**
+     * 获取微信客服基本信息列表链接
+     * @param accessToken
+     * @return
+     */
+    public String getkfinfoListUrl(String accessToken){
+        return String.format("https://api.weixin.qq.com/cgi-bin/customservice/getkflist?access_token=%s", accessToken);
+    }
+
+    /**
+     * 获取微信在线客服列表链接
+     * @param accessToken
+     * @return
+     */
+    public String getkfonlineListUrl(String accessToken){
+        return String.format("https://api.weixin.qq.com/cgi-bin/customservice/getonlinekflist?access_token=%s", accessToken);
+    }
+
+    /**
+     * 获取客服添加链接
+     * @param accessToken
+     * @return
+     */
+    public String getkfAddUrl(String accessToken){
+        return String.format("https://api.weixin.qq.com/customservice/kfaccount/add?access_token=%s", accessToken);
+    }
+
+    /**
+     * 获取客服绑定微信链接
+     * @param accessToken
+     * @return
+     */
+    public String getkfBindWxUrl(String accessToken){
+        return String.format("https://api.weixin.qq.com/customservice/kfaccount/inviteworker?access_token=%s", accessToken);
+    }
+
 }

@@ -7,9 +7,13 @@ import com.zhaozhiguang.component.weixin.cache.WxCache;
 import com.zhaozhiguang.component.weixin.config.WxApiConfig;
 import com.zhaozhiguang.component.weixin.config.WxProperties;
 import com.zhaozhiguang.component.weixin.pojo.req.customer.CustomerSupportMsg;
+import com.zhaozhiguang.component.weixin.pojo.req.kefu.AddKeFuReq;
+import com.zhaozhiguang.component.weixin.pojo.req.kefu.BindWxKeFuReq;
 import com.zhaozhiguang.component.weixin.pojo.req.qrcode.QrCodeMsg;
 import com.zhaozhiguang.component.weixin.pojo.req.template.TemplateSupportMsg;
 import com.zhaozhiguang.component.weixin.pojo.res.*;
+import com.zhaozhiguang.component.weixin.pojo.res.kefu.KeFuInfoListRes;
+import com.zhaozhiguang.component.weixin.pojo.res.kefu.KeFuOnlineRes;
 import com.zhaozhiguang.component.weixin.sign.JsApiSignUtil;
 import com.zhaozhiguang.component.weixin.sign.WxSignUtil;
 import com.zhaozhiguang.component.weixin.util.ArgsCheckUtils;
@@ -244,9 +248,76 @@ public class WeiXinManager {
         return config.getShowQrCodeUrl(ticket);
     }
 
+    /**
+     * 获取客服基本信息列表
+     * @return
+     */
+    public KeFuInfoListRes kfInfoList(){
+        String token = getAccessToken();
+        try {
+            String result = HttpUtils.get(config.getkfinfoListUrl(token),null);
+            if(result!=null){
+                return JSON.parseObject(result, KeFuInfoListRes.class);
+            }
+        } catch (IOException e) {
+            logger.error("获取客服基本信息列表发生异常", e);
+        }
+        return null;
+    }
 
+    /**
+     * 获取在线客服列表
+     * @return
+     */
+    public KeFuOnlineRes kfOnlineList(){
+        String token = getAccessToken();
+        try {
+            String result = HttpUtils.get(config.getkfonlineListUrl(token),null);
+            if(result!=null){
+                return JSON.parseObject(result, KeFuOnlineRes.class);
+            }
+        } catch (IOException e) {
+            logger.error("获取客服基本信息列表发生异常", e);
+        }
+        return null;
+    }
 
+    /**
+     * 客服添加
+     * @return
+     */
+    public boolean kfAdd(AddKeFuReq kefu){
+        ArgsCheckUtils.notNull(kefu);
+        String token = getAccessToken();
+        try {
+            String result = HttpUtils.postJson(config.getkfAddUrl(token),null, JSON.toJSONString(kefu));
+            if(result!=null){
+                SupportRes res = JSON.parseObject(result, SupportRes.class);
+                if(res!=null&&res.getErrcode()==0) return true;
+            }
+        } catch (IOException e) {
+            logger.error("添加客服发生异常", e);
+        }
+        return false;
+    }
 
-
+    /**
+     * 客服添加
+     * @return
+     */
+    public boolean kfAdd(BindWxKeFuReq kefu){
+        ArgsCheckUtils.notNull(kefu);
+        String token = getAccessToken();
+        try {
+            String result = HttpUtils.postJson(config.getkfBindWxUrl(token),null, JSON.toJSONString(kefu));
+            if(result!=null){
+                SupportRes res = JSON.parseObject(result, SupportRes.class);
+                if(res!=null&&res.getErrcode()==0) return true;
+            }
+        } catch (IOException e) {
+            logger.error("客服绑定微信号发生异常", e);
+        }
+        return false;
+    }
 
 }

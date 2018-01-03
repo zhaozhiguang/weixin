@@ -72,4 +72,9 @@ public class WxManagerTest {
         manager.getQrCodeUrl(qrCodeMsg);
     }
 
+    @Test
+    public void json3Test(){
+        //System.err.println(JSON.toJSONString(manager.kfInfoList()));
+    }
+
 }
