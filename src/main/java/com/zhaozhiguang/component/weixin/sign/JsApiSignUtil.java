@@ -24,7 +24,8 @@ public class JsApiSignUtil {
         StringBuilder string1 = new StringBuilder();
         String signature = "";
         //注意这里参数名必须全部小写，且必须有序
-        string1.append("jsapi_ticket=").append(jsapi_ticket).append("&noncestr=").append(nonce_str).append("&timestamp=").append(timestamp).append("&url=").append(url);
+        string1.append("jsapi_ticket=").append(jsapi_ticket).append("&noncestr=").append(nonce_str)
+                .append("&timestamp=").append(timestamp).append("&url=").append(url);
         try {
             MessageDigest crypt = MessageDigest.getInstance("SHA-1");
             crypt.reset();

@@ -3,6 +3,7 @@ import com.zhaozhiguang.component.weixin.config.WxProperties;
 import com.zhaozhiguang.component.weixin.facade.WeiXinManager;
 import com.zhaozhiguang.component.weixin.pojo.Constant;
 import com.zhaozhiguang.component.weixin.pojo.req.customer.CustomerSupportMsg;
+import com.zhaozhiguang.component.weixin.pojo.req.qrcode.QrCodeMsg;
 import com.zhaozhiguang.component.weixin.pojo.req.template.TemplateSupportMsg;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,29 +26,10 @@ public class WxManagerTest {
     }
 
     @Test
-    public void wxmanagerTest(){
-        WeiXinManager manager = new WeiXinManager();
-
-        WxProperties properties = new WxProperties();
-
-        manager.setProperties(properties);
-
-        manager.getAuthorizedLoginUrl("http://example.com","state");
-
-        manager.getOpenId("code");
-
-        manager.getUserInfoByOpenId("code");
-
-        manager.getUserInfoByCode("code");
-
-
-
-    }
-
-    @Test
     public void jsonTest(){
         List<CustomerSupportMsg.NewsMsg.Article> articles = new ArrayList<>();
-        CustomerSupportMsg.NewsMsg.Article article = new CustomerSupportMsg.NewsMsg.Article("标题","描述","https://www.baidu.com/img/bd_logo1.png","http://www.baidu.com");
+        CustomerSupportMsg.NewsMsg.Article article =
+                new CustomerSupportMsg.NewsMsg.Article("标题","描述","https://www.baidu.com/img/bd_logo1.png","http://www.baidu.com");
         articles.add(article);
         CustomerSupportMsg customerSupportMsg = new CustomerSupportMsg();
         customerSupportMsg.setTouser("ov-v2wFORZJbSo5Dk5tfhmWj0Lqs");
@@ -68,10 +50,26 @@ public class WxManagerTest {
                 .addData("first","欢迎你的光临")
                 .addData("keyword2","你的名字")
                 .addData("keyword1","yyyy-MM-dd")
-                .addData("remark","再接再厉哦");
+                .addData("remark","再接再厉哦","#9932CC");
         String result = JSON.toJSONString(templateSupportMsg);
         System.err.println(result);
         manager.SendTemplateMsg(templateSupportMsg);
+    }
+
+    @Test
+    public void json2Test(){
+        //临时
+        QrCodeMsg qrCodeMsg = new QrCodeMsg();
+        qrCodeMsg.setExpire_seconds(1200);
+        qrCodeMsg.addScene(new QrCodeMsg.QrSecneStr(QrCodeMsg.QR_SCENE_TYPE_String.QR_STR_SCENE,"123"));
+        System.err.println(JSON.toJSONString(qrCodeMsg));
+
+        //永久
+        QrCodeMsg qrCodeMsg1 = new QrCodeMsg();
+        qrCodeMsg1.addScene(new QrCodeMsg.QrSecneId(QrCodeMsg.QR_SCENE_TYPE_Integer.QR_LIMIT_SCENE,1));
+        System.err.println(JSON.toJSONString(qrCodeMsg1));
+
+        manager.getQrCodeUrl(qrCodeMsg);
     }
 
 }

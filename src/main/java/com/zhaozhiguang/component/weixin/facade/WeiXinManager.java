@@ -7,6 +7,7 @@ import com.zhaozhiguang.component.weixin.cache.WxCache;
 import com.zhaozhiguang.component.weixin.config.WxApiConfig;
 import com.zhaozhiguang.component.weixin.config.WxProperties;
 import com.zhaozhiguang.component.weixin.pojo.req.customer.CustomerSupportMsg;
+import com.zhaozhiguang.component.weixin.pojo.req.qrcode.QrCodeMsg;
 import com.zhaozhiguang.component.weixin.pojo.req.template.TemplateSupportMsg;
 import com.zhaozhiguang.component.weixin.pojo.res.*;
 import com.zhaozhiguang.component.weixin.sign.JsApiSignUtil;
@@ -212,6 +213,38 @@ public class WeiXinManager {
         String ticket = getJsApiTicket();
         return JsApiSignUtil.sign(ticket, url);
     }
+
+    /**
+     * 获取二维码ticket
+     * @return
+     */
+    public String getQrCodeTicket(QrCodeMsg qrCodeMsg){
+        ArgsCheckUtils.notNull(qrCodeMsg);
+        String token = getAccessToken();
+        try {
+            String result = HttpUtils.postJson(config.getQrCodeUrl(token),null, JSON.toJSONString(qrCodeMsg));
+            if(result!=null){
+                JSONObject obj = JSON.parseObject(result);
+                if(obj!=null&&obj.get("ticket")!=null){
+                    return obj.get("ticket").toString();
+                }
+            }
+        } catch (IOException e) {
+            logger.error("获取二维码ticket发生异常", e);
+        }
+        return null;
+    }
+
+    /**
+     * 获取二维码地址
+     * @return
+     */
+    public String getQrCodeUrl(QrCodeMsg qrCodeMsg){
+        String ticket = getQrCodeTicket(qrCodeMsg);
+        return config.getShowQrCodeUrl(ticket);
+    }
+
+
 
 
 

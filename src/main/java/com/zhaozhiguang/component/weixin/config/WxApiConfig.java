@@ -45,7 +45,16 @@ public class WxApiConfig {
      * @return
      */
     public String getQrCodeUrl(String accessToken){
-        return String.format("https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=%s", accessToken);
+        return String.format("https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=%s", accessToken);
+    }
+
+    /**
+     * 获取显示二维码链接
+     * @param ticket
+     * @return
+     */
+    public String getShowQrCodeUrl(String ticket){
+        return String.format("https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=%s", ticket);
     }
 
     /**
