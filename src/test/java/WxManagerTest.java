@@ -77,8 +77,10 @@ public class WxManagerTest {
     @Test
     public void json3Test(){
         MenuSetReq menu = new MenuSetReq();
-        menu.addButton(new MenuSetReq.Button("菜单").addChildButton(new MenuSetReq.Button("点击进入").
+        menu.addButton(new MenuSetReq.Button("菜单哈哈哈").addChildButton(new MenuSetReq.Button("点击进入").
                 setType(MenuSetReq.BUTTONTYPE.VIEW).setUrl("http://www.baidu.com")));
+        menu.addButton(new MenuSetReq.Button("友军").addChildButton(new MenuSetReq.Button("第一").setType(MenuSetReq.BUTTONTYPE.VIEW).setUrl("http://www.taobao.com"))
+                .addChildButton(new MenuSetReq.Button("第二").setType(MenuSetReq.BUTTONTYPE.VIEW).setUrl("http://www.sina.com")));
         System.err.println(JSON.toJSONString(menu));
         manager.menuSet(menu);
     }
