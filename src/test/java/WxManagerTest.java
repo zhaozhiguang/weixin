@@ -3,8 +3,10 @@ import com.zhaozhiguang.component.weixin.config.WxProperties;
 import com.zhaozhiguang.component.weixin.facade.WeiXinManager;
 import com.zhaozhiguang.component.weixin.pojo.Constant;
 import com.zhaozhiguang.component.weixin.pojo.req.customer.CustomerSupportMsg;
+import com.zhaozhiguang.component.weixin.pojo.req.menu.MenuSetReq;
 import com.zhaozhiguang.component.weixin.pojo.req.qrcode.QrCodeMsg;
 import com.zhaozhiguang.component.weixin.pojo.req.template.TemplateSupportMsg;
+import com.zhaozhiguang.component.weixin.pojo.res.menu.MenuQueryRes;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -74,7 +76,17 @@ public class WxManagerTest {
 
     @Test
     public void json3Test(){
-        //System.err.println(JSON.toJSONString(manager.kfInfoList()));
+        MenuSetReq menu = new MenuSetReq();
+        menu.addButton(new MenuSetReq.Button("菜单").addChildButton(new MenuSetReq.Button("点击进入").
+                setType(MenuSetReq.BUTTONTYPE.VIEW).setUrl("http://www.baidu.com")));
+        System.err.println(JSON.toJSONString(menu));
+        manager.menuSet(menu);
+    }
+
+    @Test
+    public void json4Test(){
+        MenuQueryRes menuQueryRes = manager.menuQuery();
+        System.err.println(JSON.toJSONString(menuQueryRes));
     }
 
 }

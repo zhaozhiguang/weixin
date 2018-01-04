@@ -143,4 +143,24 @@ public class WxApiConfig {
         return String.format("https://api.weixin.qq.com/customservice/kfaccount/inviteworker?access_token=%s", accessToken);
     }
 
+    /****-----------------------------公众号菜单---------------------------------****/
+
+    /**
+     * 获取公众号菜单设置链接
+     * @param accessToken
+     * @return
+     */
+    public String getMenuSetUrl(String accessToken){
+        return String.format("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s", accessToken);
+    }
+
+    /**
+     * 获取公众号菜单查询链接
+     * @param accessToken
+     * @return
+     */
+    public String getMenuQueryUrl(String accessToken){
+        return String.format("https://api.weixin.qq.com/cgi-bin/menu/get?access_token=%s", accessToken);
+    }
+
 }

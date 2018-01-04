@@ -9,11 +9,13 @@ import com.zhaozhiguang.component.weixin.config.WxProperties;
 import com.zhaozhiguang.component.weixin.pojo.req.customer.CustomerSupportMsg;
 import com.zhaozhiguang.component.weixin.pojo.req.kefu.AddKeFuReq;
 import com.zhaozhiguang.component.weixin.pojo.req.kefu.BindWxKeFuReq;
+import com.zhaozhiguang.component.weixin.pojo.req.menu.MenuSetReq;
 import com.zhaozhiguang.component.weixin.pojo.req.qrcode.QrCodeMsg;
 import com.zhaozhiguang.component.weixin.pojo.req.template.TemplateSupportMsg;
 import com.zhaozhiguang.component.weixin.pojo.res.*;
 import com.zhaozhiguang.component.weixin.pojo.res.kefu.KeFuInfoListRes;
 import com.zhaozhiguang.component.weixin.pojo.res.kefu.KeFuOnlineRes;
+import com.zhaozhiguang.component.weixin.pojo.res.menu.MenuQueryRes;
 import com.zhaozhiguang.component.weixin.sign.JsApiSignUtil;
 import com.zhaozhiguang.component.weixin.sign.WxSignUtil;
 import com.zhaozhiguang.component.weixin.util.ArgsCheckUtils;
@@ -302,10 +304,10 @@ public class WeiXinManager {
     }
 
     /**
-     * 客服添加
+     * 客服绑定
      * @return
      */
-    public boolean kfAdd(BindWxKeFuReq kefu){
+    public boolean kfBind(BindWxKeFuReq kefu){
         ArgsCheckUtils.notNull(kefu);
         String token = getAccessToken();
         try {
@@ -319,5 +321,42 @@ public class WeiXinManager {
         }
         return false;
     }
+
+    /**
+     * 菜单添加
+     * @return
+     */
+    public boolean menuSet(MenuSetReq menu){
+        ArgsCheckUtils.notNull(menu);
+        String token = getAccessToken();
+        try {
+            String result = HttpUtils.postJson(config.getMenuSetUrl(token),null, JSON.toJSONString(menu));
+            if(result!=null){
+                SupportRes res = JSON.parseObject(result, SupportRes.class);
+                if(res!=null&&res.getErrcode()==0) return true;
+            }
+        } catch (IOException e) {
+            logger.error("设置菜单发生异常", e);
+        }
+        return false;
+    }
+
+    /**
+     * 菜单查询
+     * @return
+     */
+    public MenuQueryRes menuQuery(){
+        String token = getAccessToken();
+        try {
+            String result = HttpUtils.get(config.getMenuQueryUrl(token),null);
+            if(result!=null){
+                return JSON.parseObject(result, MenuQueryRes.class);
+            }
+        } catch (IOException e) {
+            logger.error("查询菜单发生异常", e);
+        }
+        return null;
+    }
+
 
 }
