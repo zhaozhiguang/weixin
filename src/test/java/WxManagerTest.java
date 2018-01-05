@@ -2,14 +2,19 @@ import com.alibaba.fastjson.JSON;
 import com.zhaozhiguang.component.weixin.config.WxProperties;
 import com.zhaozhiguang.component.weixin.facade.WeiXinManager;
 import com.zhaozhiguang.component.weixin.pojo.Constant;
+import com.zhaozhiguang.component.weixin.pojo.MediaType;
 import com.zhaozhiguang.component.weixin.pojo.req.customer.CustomerSupportMsg;
+import com.zhaozhiguang.component.weixin.pojo.req.media.MediaPermNewsReq;
 import com.zhaozhiguang.component.weixin.pojo.req.menu.MenuSetReq;
 import com.zhaozhiguang.component.weixin.pojo.req.qrcode.QrCodeMsg;
 import com.zhaozhiguang.component.weixin.pojo.req.template.TemplateSupportMsg;
+import com.zhaozhiguang.component.weixin.pojo.res.media.PermMediaNewsRes;
+import com.zhaozhiguang.component.weixin.pojo.res.media.TempMediaSetRes;
 import com.zhaozhiguang.component.weixin.pojo.res.menu.MenuQueryRes;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,6 +94,55 @@ public class WxManagerTest {
     public void json4Test(){
         MenuQueryRes menuQueryRes = manager.menuQuery();
         System.err.println(JSON.toJSONString(menuQueryRes));
+    }
+
+    @Test
+    public void json5Test(){
+        File file = new File("D:\\1.jpg");
+        String s = manager.mediaImgUrl(file);
+        System.err.println(s);
+    }
+
+    @Test
+    public void json6Test(){
+        File file = new File("D:\\1.jpg");
+        TempMediaSetRes tempMediaSetRes = manager.mediaTempSet(MediaType.IMAGE, file);
+        System.err.println(JSON.toJSONString(tempMediaSetRes));
+    }
+
+    @Test
+    public void json7Test(){
+        File file = new File("D:\\1.jpg");
+        TempMediaSetRes tempMediaSetRes = manager.mediaPermSet(MediaType.IMAGE, file);
+        System.err.println(JSON.toJSONString(tempMediaSetRes));
+        //mhjQ3V6dxXWxx-iwB5rsxhPiuoH6_rbO3bJkDnB-Jvw
+    }
+
+    @Test
+    public void json8Test(){
+        /*MediaPermNewsReq news = new MediaPermNewsReq();
+        news.addArticle(new MediaPermNewsReq.Article("标题","mhjQ3V6dxXWxx-iwB5rsxhPiuoH6_rbO3bJkDnB-Jvw"
+                ,"作者","摘要",1,"这是具体的内容啊啊啊啊啊啊啊啊啊","原文地址"));
+        TempMediaSetRes tempMediaSetRes = manager.mediaPermNewsSet(news);
+        System.err.println(JSON.toJSONString(tempMediaSetRes));*/
+        MediaPermNewsReq news = new MediaPermNewsReq();
+        news.addArticle(new MediaPermNewsReq.Article("标题",null
+                ,"作者","摘要",1,"这是具体的内容啊啊啊啊啊啊啊啊啊","原文地址"));
+        File file = new File("D:\\1.jpg");
+        TempMediaSetRes tempMediaSetRes = manager.mediaPermNewsSet(MediaType.IMAGE, file, news);
+        System.err.println(JSON.toJSONString(tempMediaSetRes));
+    }
+
+    @Test
+    public void json9Test(){
+        PermMediaNewsRes permMediaNewsRes = manager.mediaPermNewsQuery("mhjQ3V6dxXWxx-iwB5rsxvV44QjnPXZlI_auGcDs_bU");
+        System.err.println(JSON.toJSONString(permMediaNewsRes));
+    }
+
+    @Test
+    public void json10Test(){
+        boolean b = manager.mediaPermDelete("mhjQ3V6dxXWxx-iwB5rsxvV44QjnPXZlI_auGcDs_bU");
+        System.err.println(b);
     }
 
 }

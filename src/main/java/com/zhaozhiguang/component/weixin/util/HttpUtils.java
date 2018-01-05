@@ -190,7 +190,7 @@ public class HttpUtils {
         String responseBody = null;
         CloseableHttpClient httpClient = getHttpClient();
         StringBuilder sb = new StringBuilder(url);
-        appendUrlParam(queries, sb);
+        if(queries!=null) appendUrlParam(queries, sb);
         //指定url,和http方式
         HttpPost httpPost = new HttpPost(sb.toString());
         MultipartEntityBuilder form = MultipartEntityBuilder.create();

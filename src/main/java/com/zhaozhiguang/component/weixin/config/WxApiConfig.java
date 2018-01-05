@@ -163,4 +163,83 @@ public class WxApiConfig {
         return String.format("https://api.weixin.qq.com/cgi-bin/menu/get?access_token=%s", accessToken);
     }
 
+    /****------------------------------素材管理-------------------------------------****/
+
+    /**
+     * 获取新增临时素材链接
+     * @param accessToken
+     * @param mediaType
+     * @return
+     */
+    public String getMediaTempSetUrl(String accessToken, String mediaType){
+        return String.format("https://api.weixin.qq.com/cgi-bin/media/upload?access_token=%s&type=%s", accessToken, mediaType);
+    }
+
+    /**
+     * 获取临时素材链接
+     * @param accessToken
+     * @param mediaId
+     * @return
+     */
+    public String getMediaTempQueryUrl(String accessToken, String mediaId){
+        return String.format("https://api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s", accessToken, mediaId);
+    }
+
+    /**
+     * 获取新增永久其他类型素材链接
+     * @param accessToken
+     * @param mediaType
+     * @return
+     */
+    public String getMediaPermSetUrl(String accessToken, String mediaType){
+        return String.format("https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=%s&type=%s", accessToken, mediaType);
+    }
+
+    /**
+     * 获取新增图文素材链接
+     * @param accessToken
+     * @return
+     */
+    public String getMediaPermSetUrl(String accessToken){
+        return String.format("https://api.weixin.qq.com/cgi-bin/material/add_news?access_token=%s", accessToken);
+    }
+
+    /**
+     * 上传图文消息内的图片获取URL
+     * @param accessToken
+     * @return
+     */
+    public String getMediaImgSetUrl(String accessToken){
+        return String.format("https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=%s", accessToken);
+    }
+
+    /**
+     * 获取永久图文素材链接
+     * @param accessToken
+     * @return
+     */
+    public String getMediaPermQueryUrl(String accessToken){
+        return String.format("https://api.weixin.qq.com/cgi-bin/material/get_material?access_token=%s", accessToken);
+    }
+
+    /**
+     * 获取永久其他类型素材链接
+     * @param accessToken
+     * @return
+     */
+    public String getMediaPermNewsQueryUrl(String accessToken){
+        return String.format("https://api.weixin.qq.com/cgi-bin/material/get_material?access_token=%s", accessToken);
+    }
+
+    /**
+     * 获取删除永久素材链接
+     * @param accessToken
+     * @return
+     */
+    public String getMediaPermDeleteUrl(String accessToken){
+        return String.format("https://api.weixin.qq.com/cgi-bin/material/del_material?access_token=%s", accessToken);
+    }
+
+
+
 }
